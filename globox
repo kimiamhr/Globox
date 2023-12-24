@@ -1,0 +1,14 @@
+SELECT
+u.id,
+u.country,
+u.gender,
+g.device,
+g."group",
+SUM(COALESCE(a.spent,0)) AS total_spent,
+CASE WHEN a.spent > 0 THEN 1 ELSE 0 END AS converted
+FROM users AS u
+LEFT JOIN activity AS a
+ON u.id = a.uid
+LEFT JOIN groups AS g
+ON u.id = g.uid
+GROUP BY u.id,u.country,u.gender,g.device,g."group", converted
